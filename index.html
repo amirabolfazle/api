@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Amirabolfazl's APIs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.fontcdn.ir/Fonts/Shabnam/Shabnam.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --red: #ff2a2a;
+      --black: #0a0a0a;
+      --gradient: linear-gradient(325deg, #0a0a0a 30%, #ff2a2a 100%);
+      --code-bg: #1e1e1e;
+      --code-text: #d4d4d4;
+    }
+
+    * {
+      font-family: 'Shabnam', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--gradient);
+      background-size: 400% 400%;
+      animation: bgmove 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: white;
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    @keyframes bgmove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn {
+      background: rgba(255, 42, 42, 0.2);
+      border: 2px solid var(--red);
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      color: white;
+      cursor: pointer;
+      margin: 1rem;
+      font-size: 1.2rem;
+      transition: 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn:hover {
+      background: rgba(255, 42, 42, 0.3);
+      box-shadow: 0 0 15px var(--red);
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background-color: var(--black);
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      border: 2px solid var(--red);
+      box-shadow: 0 0 20px rgba(255, 42, 42, 0.3);
+      text-align: center;
+      font-size: 1.5rem;
+      color: white;
+      max-width: 90%;
+      max-height: 90%;
+      overflow: auto;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .codebox {
+      background: var(--code-bg);
+      color: var(--code-text);
+      text-align: left;
+      margin-top: 2rem;
+      border-radius: 10px;
+      border: 1px solid #555;
+      font-size: 1rem;
+      overflow: hidden;
+      direction: ltr;
+    }
+
+    .codebox .topbar {
+      background-color: #2e2e2e;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #444;
+    }
+
+    .codebox .topbar span {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .codebox .codearea {
+      padding: 1rem;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+    }
+
+    .copy-btn {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--red);
+    }
+
+    .language-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 42, 42, 0.2);
+      border: 2px solid var(--red);
+      border-radius: 50px;
+      padding: 10px 15px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switcher:hover {
+      background: rgba(255, 42, 42, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--red);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="language-switcher" onclick="toggleLang()">
+    <i class="fas fa-globe"></i>
+    <span id="langLabel">English</span>
+  </div>
+
+  <h1 id="title">Amirabolfazl's APIs</h1>
+
+  <table>
+    <tr>
+      <td><button class="btn" id="btn1" onclick="openModal('code')">Card Info</button></td>
+      <td><button class="btn" id="btn2" onclick="openModal('aboutme')">About Me</button></td>
+    </tr>
+  </table>
+
+  <div class="modal" id="aboutme" onclick="closeModal(event, 'aboutme')">
+    <div class="modal-content">
+      <h6>:)</h6>
+    </div>
+  </div>
+
+  <div class="modal" id="code" onclick="closeModal(event, 'code')">
+    <div class="modal-content">
+      <h3 id="codeTitle"><i class="fas fa-credit-card-alt"></i> Card Info API</h3>
+      <h6 id="desc1">برای دریافت اطلاعات مرتبط با کارت بانکی از طریق شماره کارت باید با متد زیر ریکوئست بزنید</h6>
+
+      <!-- Codebox 1 -->
+      <div class="codebox">
+        <div class="topbar">
+          <span>code.py</span>
+          <button class="copy-btn" onclick="copyCode(this, 'code1')"><i class="fas fa-copy"></i> <span class="copy-text">کپی</span></button>
+        </div>
+        <div class="codearea" id="code1">GET https://api.amirabolfazl.ir/card?card=6037991712345678</div>
+      </div>
+
+      <h6 id="desc2">خروجی مشابه زیر خواهد بود</h6>
+
+      <!-- Codebox 2 -->
+      <div class="codebox">
+        <div class="topbar">
+          <span>response.json</span>
+          <button class="copy-btn" onclick="copyCode(this, 'code2')"><i class="fas fa-copy"></i> <span class="copy-text">کپی</span></button>
+        </div>
+        <div class="codearea" id="code2">{
+  "status": 200,
+  "result": {
+    "card": "6037991712345678",
+    "owner": null,
+    "bank": "ملی"
+  }
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let lang = 'fa';
+    const langTexts = {
+      title: {
+        fa: "API های امیرابوالفضل",
+        en: "Amirabolfazl's APIs"
+      },
+      btn1: {
+        fa: "اطلاعات کارت",
+        en: "Card Info"
+      },
+      btn2: {
+        fa: "درباره من",
+        en: "About Me"
+      },
+      codeTitle: {
+        fa: "API اطلاعات کارت",
+        en: "Card Info API"
+      },
+      desc1: {
+        fa: "برای دریافت اطلاعات مرتبط با کارت بانکی از طریق شماره کارت باید با متد زیر ریکوئست بزنید",
+        en: "To get bank card info by card number, send a request to the following endpoint:"
+      },
+      desc2: {
+        fa: "خروجی مشابه زیر خواهد بود",
+        en: "The response will look like this"
+      },
+      langLabel: {
+        fa: "فارسی",
+        en: "English"
+      },
+      copy: {
+        fa: "کپی",
+        en: "Copy"
+      },
+      copied: {
+        fa: "کپی شد!",
+        en: "Copied!"
+      }
+    };
+
+    function updateTexts() {
+      const t = langTexts;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+      document.getElementById('title').innerText = t.title[lang];
+      document.getElementById('btn1').innerText = t.btn1[lang];
+      document.getElementById('btn2').innerText = t.btn2[lang];
+      document.getElementById('codeTitle').innerHTML = `<i class="fas fa-credit-card-alt"></i> ${t.codeTitle[lang]}`;
+      document.getElementById('desc1').innerText = t.desc1[lang];
+      document.getElementById('desc2').innerText = t.desc2[lang];
+      document.getElementById('langLabel').innerText = t.langLabel[lang];
+      document.querySelectorAll('.copy-text').forEach(el => el.innerText = t.copy[lang]);
+    }
+
+    function toggleLang() {
+      lang = lang === 'fa' ? 'en' : 'fa';
+      updateTexts();
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('show');
+    }
+
+    function closeModal(e, id) {
+      if (e.target.id === id) {
+        document.getElementById(id).classList.remove('show');
+      }
+    }
+
+    function copyCode(btn, codeId) {
+      const code = document.getElementById(codeId).innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.querySelector('.copy-text').innerText = langTexts.copied[lang];
+        setTimeout(() => {
+          btn.querySelector('.copy-text').innerText = langTexts.copy[lang];
+        }, 1500);
+      });
+    }
+
+    updateTexts();
+  </script>
+</body>
+</html>
