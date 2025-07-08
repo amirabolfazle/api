@@ -17,6 +17,7 @@
 
     * {
       font-family: 'Shabnam', sans-serif;
+      box-sizing: border-box;
     }
 
     body {
@@ -47,16 +48,31 @@
       border-radius: 15px;
       color: white;
       cursor: pointer;
-      margin: 1rem;
+      margin: 0.5rem;
       font-size: 1.2rem;
       transition: 0.3s;
       backdrop-filter: blur(4px);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn:hover {
       background: rgba(255, 42, 42, 0.3);
       box-shadow: 0 0 15px var(--red);
       transform: scale(1.05);
+    }
+
+    table {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    td {
+      min-width: 180px;
+      padding: 0.5rem;
     }
 
     .modal {
@@ -176,8 +192,21 @@
 
   <table>
     <tr>
-      <td><button class="btn" id="btn1" onclick="openModal('code')">Card Info</button></td>
-      <td><button class="btn" id="btn2" onclick="openModal('aboutme')">About Me</button></td>
+      <td>
+        <button class="btn" id="btn1" onclick="openModal('code')">
+          <i class="fas fa-credit-card"></i> <span id="btn1Text">Card Info</span>
+        </button>
+      </td>
+      <td>
+        <button class="btn" id="btn2" onclick="openModal('aboutme')">
+          <i class="fas fa-user"></i> <span id="btn2Text">About Me</span>
+        </button>
+      </td>
+      <td>
+        <button class="btn" id="btn3" onclick="openModal('ai')">
+          <i class="fas fa-brain"></i> <span id="btn3Text">AI</span>
+        </button>
+      </td>
     </tr>
   </table>
 
@@ -190,24 +219,22 @@
   <div class="modal" id="code" onclick="closeModal(event, 'code')">
     <div class="modal-content">
       <h3 id="codeTitle"><i class="fas fa-credit-card-alt"></i> Card Info API</h3>
-      <h6 id="desc1">برای دریافت اطلاعات مرتبط با کارت بانکی از طریق شماره کارت باید با متد زیر ریکوئست بزنید</h6>
+      <h6 id="desc1"></h6>
 
-      <!-- Codebox 1 -->
       <div class="codebox">
         <div class="topbar">
           <span>code.py</span>
-          <button class="copy-btn" onclick="copyCode(this, 'code1')"><i class="fas fa-copy"></i> <span class="copy-text">کپی</span></button>
+          <button class="copy-btn" onclick="copyCode(this, 'code1')"><i class="fas fa-copy"></i> <span class="copy-text"></span></button>
         </div>
         <div class="codearea" id="code1">GET https://api.amirabolfazl.ir/card?card=6037991712345678</div>
       </div>
 
-      <h6 id="desc2">خروجی مشابه زیر خواهد بود</h6>
+      <h6 id="desc2"></h6>
 
-      <!-- Codebox 2 -->
       <div class="codebox">
         <div class="topbar">
           <span>response.json</span>
-          <button class="copy-btn" onclick="copyCode(this, 'code2')"><i class="fas fa-copy"></i> <span class="copy-text">کپی</span></button>
+          <button class="copy-btn" onclick="copyCode(this, 'code2')"><i class="fas fa-copy"></i> <span class="copy-text"></span></button>
         </div>
         <div class="codearea" id="code2">{
   "status": 200,
@@ -221,25 +248,50 @@
     </div>
   </div>
 
+  <div class="modal" id="ai" onclick="closeModal(event, 'ai')">
+    <div class="modal-content">
+      <h3 id="aiTitle"></h3>
+      <h6 id="aiDesc1"></h6>
+
+      <div class="codebox">
+        <div class="topbar">
+          <span>code.py</span>
+          <button class="copy-btn" onclick="copyCode(this, 'code3')"><i class="fas fa-copy"></i> <span class="copy-text"></span></button>
+        </div>
+        <div class="codearea" id="code3">GET https://api.amirabolfazl.ir/ai/summarize?text=سلام%20چه%20خبر؟%20خوبی؟%20سلامتی؟</div>
+      </div>
+
+      <h6 id="aiParams"></h6>
+      <div class="codebox">
+        <div class="topbar">
+          <span>parameters.txt</span>
+          <button class="copy-btn" onclick="copyCode(this, 'code4')"><i class="fas fa-copy"></i> <span class="copy-text"></span></button>
+        </div>
+        <div class="codearea" id="aiParamText">text: string</div>
+      </div>
+      <h6 id="desc3"></h6>
+      <h6 id="aiOutput"></h6>
+      <div class="codebox">
+        <div class="topbar">
+          <span>response.json</span>
+          <button class="copy-btn" onclick="copyCode(this, 'code5')"><i class="fas fa-copy"></i> <span class="copy-text"></span></button>
+        </div>
+        <div class="codearea" id="code5">{
+  "status": 200,
+  "result": "سلام خوبی؟"
+}</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     let lang = 'fa';
     const langTexts = {
-      title: {
-        fa: "API های امیرابوالفضل",
-        en: "Amirabolfazl's APIs"
-      },
-      btn1: {
-        fa: "اطلاعات کارت",
-        en: "Card Info"
-      },
-      btn2: {
-        fa: "درباره من",
-        en: "About Me"
-      },
-      codeTitle: {
-        fa: "API اطلاعات کارت",
-        en: "Card Info API"
-      },
+      title: { fa: "API های امیرابوالفضل", en: "Amirabolfazl's APIs" },
+      btn1: { fa: "اطلاعات کارت", en: "Card Info" },
+      btn2: { fa: "درباره من", en: "About Me" },
+      btn3: { fa: "هوش مصنوعی", en: "AI" },
+      codeTitle: { fa: "API اطلاعات کارت", en: "Card Info API" },
       desc1: {
         fa: "برای دریافت اطلاعات مرتبط با کارت بانکی از طریق شماره کارت باید با متد زیر ریکوئست بزنید",
         en: "To get bank card info by card number, send a request to the following endpoint:"
@@ -248,18 +300,29 @@
         fa: "خروجی مشابه زیر خواهد بود",
         en: "The response will look like this"
       },
-      langLabel: {
-        fa: "فارسی",
-        en: "English"
+      desc3: {
+        fa: "خروجی مشابه زیر خواهد بود",
+        en: "The response will look like this"
       },
-      copy: {
-        fa: "کپی",
-        en: "Copy"
+      aiTitle: {
+        fa: "API خلاصه‌سازی متن هوش مصنوعی",
+        en: "AI Text Summarization API"
       },
-      copied: {
-        fa: "کپی شد!",
-        en: "Copied!"
-      }
+      aiDesc1: {
+        fa: "برای خلاصه‌سازی متن به آدرس زیر ریکوئست بزنید",
+        en: "To summarize a text, send a request to the following endpoint:"
+      },
+      aiParams: {
+        fa: "پارامترها",
+        en: "Parameters"
+      },
+      aiOutput: {
+        fa: "خروجی مشابه زیر خواهد بود",
+        en: "The response will look like this"
+      },
+      langLabel: { fa: "فارسی", en: "English" },
+      copy: { fa: "کپی", en: "Copy" },
+      copied: { fa: "کپی شد!", en: "Copied!" }
     };
 
     function updateTexts() {
@@ -268,13 +331,21 @@
       document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
 
       document.getElementById('title').innerText = t.title[lang];
-      document.getElementById('btn1').innerText = t.btn1[lang];
-      document.getElementById('btn2').innerText = t.btn2[lang];
+      document.getElementById('btn1Text').innerText = t.btn1[lang];
+      document.getElementById('btn2Text').innerText = t.btn2[lang];
+      document.getElementById('btn3Text').innerText = t.btn3[lang];
       document.getElementById('codeTitle').innerHTML = `<i class="fas fa-credit-card-alt"></i> ${t.codeTitle[lang]}`;
       document.getElementById('desc1').innerText = t.desc1[lang];
       document.getElementById('desc2').innerText = t.desc2[lang];
+      document.getElementById('desc3').innerText = t.desc3[lang];
       document.getElementById('langLabel').innerText = t.langLabel[lang];
       document.querySelectorAll('.copy-text').forEach(el => el.innerText = t.copy[lang]);
+
+      document.getElementById('aiTitle').innerHTML = `<i class=\"fas fa-list-alt\"></i> ${t.aiTitle[lang]}`;
+      document.getElementById('aiDesc1').innerText = t.aiDesc1[lang];
+      document.getElementById('aiParams').innerText = t.aiParams[lang];
+      document.getElementById('aiParamText').innerText = t.aiParamText[lang];
+      document.getElementById('aiOutput').innerText = t.aiOutput[lang];
     }
 
     function toggleLang() {
